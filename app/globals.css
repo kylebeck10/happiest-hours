@@ -1,26 +1,80 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-cream: #FFF7EE;
+  --color-card: #FFFFFF;
+  --color-brown: #2A1E14;
+  --color-muted: #8A7E72;
+  --color-peach: #E07A3A;
+  --color-peach-deep: #C45E20;
+  --color-border: #F0DFC8;
+
+  --color-tag-wine-bg: #FBEAF0;
+  --color-tag-wine-text: #72243E;
+  --color-tag-wine-dot: #D4537E;
+
+  --color-tag-cocktail-bg: #E1F5EE;
+  --color-tag-cocktail-text: #085041;
+  --color-tag-cocktail-dot: #1D9E75;
+
+  --color-tag-beer-bg: #EEEDFE;
+  --color-tag-beer-text: #3C3489;
+  --color-tag-beer-dot: #534AB7;
+
+  --color-tag-food-bg: #FAEEDA;
+  --color-tag-food-text: #633806;
+  --color-tag-food-dot: #BA7517;
+
+  --color-live: #1D9E75;
+
+  --font-serif: "Instrument Serif", serif;
+  --font-sans: "DM Sans", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #FFF7EE;
+  color: #2A1E14;
+  font-family: "DM Sans", sans-serif;
+}
+
+.animate-pulse-dot {
+  animation: pulse 2s infinite;
+}
+
+.animate-float-up {
+  animation: floatUp 0.6s ease both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease both;
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  background: #FDF5EB !important;
+  font-family: "DM Sans", sans-serif !important;
+}
+
+.leaflet-tile-pane {
+  filter: saturate(0.7) brightness(1.05);
 }

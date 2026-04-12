@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Happiest Hours
 
-## Getting Started
+Discover happy hour deals across Los Angeles. Every deal in one place — find what's pouring near you right now.
 
-First, run the development server:
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Landing page with live deal counter and preview cards |
+| `/explore` | Interactive map + filterable deal card grid |
+| `/contact` | Contact and venue submission |
+| `/privacy` | Privacy policy |
+
+## Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Styling:** Tailwind CSS v4 with custom "Peach & Pop" theme
+- **Map:** react-leaflet + CartoDB Positron tiles (no API key required)
+- **Data:** Local JSON generated from Excel spreadsheet
+- **Fonts:** Instrument Serif + DM Sans (Google Fonts)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Updating venue data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All venue data lives in `data/deals.xlsx`. Edit it in Excel, then the JSON regenerates automatically on the next `npm run dev` or `npm run build`.
 
-## Learn More
+### Adding a venue
+1. Add a row to `data/deals.xlsx`
+2. Use kebab-case for the `id` column (e.g. `my-new-bar`)
+3. Drop a photo at `public/venues/{id}.jpg`
+4. Run `npm run dev` — the JSON updates automatically
 
-To learn more about Next.js, take a look at the following resources:
+### Column reference
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Column | Required | Notes |
+|---|---|---|
+| `id` | ✓ | Kebab-case, must match image filename |
+| `name` | ✓ | Full venue name |
+| `neighborhood` | ✓ | Kebab-case ID (e.g. `silverlake`) |
+| `neighborhoodName` | ✓ | Display name (e.g. `Silver Lake`) |
+| `deal` | ✓ | Short deal summary shown on card |
+| `dealDetails` | | Full itemized deals, separated by ` \| ` |
+| `time` | ✓ | e.g. `4–7 PM`, `10 PM–1 AM` |
+| `days` | | e.g. `Mon–Fri`, `Daily`, `Tue–Sun` |
+| `address` | | Full street address |
+| `type` | ✓ | One of: `wine`, `cocktail`, `beer`, `food` |
+| `rating` | | Decimal, e.g. `4.7` |
+| `vibe` | ✓ | e.g. `Rooftop`, `Dive Bar`, `Patio` |
+| `img` | ✓ | Emoji placeholder shown when no photo |
+| `lat` | ✓ | Decimal latitude |
+| `lng` | ✓ | Decimal longitude |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Scripts
 
-## Deploy on Vercel
+```bash
+npm run build:data   # Manually regenerate deals.json from deals.xlsx
+npm run seed:xlsx    # (One-time) Bootstrap deals.xlsx from deals.json
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Live badge logic
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The LIVE badge is computed dynamically against **LA time** (`America/Los_Angeles`) using the venue's `time` and `days` fields. It re-checks every 60 seconds. No manual toggling needed.
+
+## Project structure
+
+```
+app/
+  page.js              Landing page
+  explore/page.js      Map + deal grid
+  contact/page.js      Contact page
+  privacy/page.js      Privacy policy
+  layout.js            Root layout + fonts
+  globals.css          Theme tokens + keyframes
+components/
+  VenueCard.jsx        Deal card for grid
+  VenueModal.jsx       Click-through detail popup
+  MiniCard.jsx         Compact card for landing preview
+  MapView.jsx          Leaflet map with pins
+  TagBadge.jsx         Colored category pill
+  LiveBadge.jsx        Pulsing green LIVE indicator
+data/
+  deals.xlsx           Source of truth — edit this
+  deals.json           Generated — do not edit directly
+  neighborhoods.json   Neighborhood bounds for map
+lib/
+  isLive.js            Time parser + LA timezone logic
+  useIsLive.js         React hook wrapping isLive
+public/
+  venues/              Venue photos ({id}.jpg)
+scripts/
+  build-deals.mjs      xlsx → json converter
+  seed-xlsx.mjs        json → xlsx bootstrapper
+```
