@@ -9,15 +9,21 @@
     "lint": "eslint",
     "build:data": "node scripts/build-deals.mjs",
     "seed:xlsx": "node scripts/seed-xlsx.mjs",
+    "collect": "node scripts/collect/collect-deals.mjs",
+    "collect:images": "node scripts/collect/download-images.mjs",
+    "collect:review": "node scripts/collect/review.mjs",
+    "collect:xlsx": "node scripts/collect/to-xlsx.mjs",
     "predev": "npm run build:data",
     "prebuild": "npm run build:data"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.88.0",
     "leaflet": "^1.9.4",
     "next": "16.2.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-leaflet": "^5.0.0"
+    "react-leaflet": "^5.0.0",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

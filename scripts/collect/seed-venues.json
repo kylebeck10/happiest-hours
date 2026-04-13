@@ -1,0 +1,27 @@
+[
+  {
+    "id": "highlight-room",
+    "name": "The Highlight Room",
+    "address": "6417 Selma Ave, Los Angeles, CA 90028"
+  },
+  {
+    "id": "gracias-madre",
+    "name": "Gracias Madre",
+    "address": "8905 Melrose Ave, West Hollywood, CA 90069"
+  },
+  {
+    "id": "normandie-club",
+    "name": "The Normandie Club",
+    "address": "3719 W 6th St, Los Angeles, CA 90020"
+  },
+  {
+    "id": "otium",
+    "name": "Otium",
+    "address": "222 S Hope St, Los Angeles, CA 90012"
+  },
+  {
+    "id": "el-carmen",
+    "name": "El Carmen",
+    "address": "8138 W 3rd St, Los Angeles, CA 90048"
+  }
+]
